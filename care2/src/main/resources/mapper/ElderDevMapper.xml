@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="xyz.hydrion.care.mapper.ElderDevMapper">
+    <resultMap id="elderDevMap" type="xyz.hydrion.care.domain.ElderDev">
+        <id property="id" column="id"/>
+        <result property="provinceName" column="province_name"/>
+        <result property="cityName" column="city_name"/>
+        <result property="districtName" column="district_name"/>
+        <result property="extraName" column="extra_name"/>
+
+        <result property="wearerName" column="wearer_name"/>
+        <result property="createTime" column="create_time"/>
+    </resultMap>
+    <select id="selectAll" resultMap="elderDevMap">
+        select e.id, e.province_name, e.create_time, e.city_name, e.district_name, e.extra_name
+        from elder_dev e
+    </select>
+    <select id="selectById" resultMap="elderDevMap">
+        select *
+        from elder_dev e
+        where e.id = #{id}
+    </select>
+    <resultMap id="statusMap" type="xyz.hydrion.care.domain.ElderDevStatus">
+        <result property="devId" column="dev_id"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="devStatus" column="dev_status"/>
+        <result property="wearerStatus" column="wearer_status"/>
+        <result property="heartRate" column="heart_rate"/>
+    </resultMap>
+    <select id="selectStatusByDevId" resultMap="statusMap">
+        select s.dev_id,s.update_time,s.dev_status,s.wearer_status,s.heart_rate
+        from elder_dev_status s
+        where s.dev_id = #{devId}
+        order by s.update_time desc
+    </select>
+
+    <insert id="insert">
+        insert into elder_dev(id, create_time, province_name, city_name, district_name, extra_name) values (#{id}, #{createTime}, #{provinceName}, #{cityName}, #{districtName}, #{extraName})
+    </insert>
+
+    <insert id="insertStatus">
+        insert into elder_dev_status(dev_id, update_time, dev_status, wearer_status, heart_rate)
+        values(#{devId},#{updateTime},#{devStatus},#{wearerStatus},#{heartRate})
+    </insert>
+
+</mapper>

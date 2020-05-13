@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="xyz.hydrion.care.mapper.UserDevMapper">
+    <insert id="insert">
+        insert into user_dev(user_id, dev_id) values (#{userId}, #{devId})
+    </insert>
+
+    <delete id="delete">
+        delete from user_dev where dev_id=#{devId} and user_id=#{userId}
+    </delete>
+
+    <resultMap id="elder_dev" type="xyz.hydrion.care.domain.ElderDev">
+        <result property="id" column="id"/>
+        <result property="wearerName" column="wearer_name"/>
+    </resultMap>
+    
+    <select id="selectUserByDevId" resultType="java.lang.String">
+        select user_id
+        from user_dev
+        where dev_id = #{id}
+    </select>
+    <select id="getPassword" resultType="java.lang.String">
+        select password from admin_user where username = #{username}
+    </select>
+    <select id="selectDevByUserId" resultType="xyz.hydrion.care.domain.ElderDev">
+        select e.id, e.wearer_name
+        from elder_dev e
+        inner join user_dev ud on ud.user_id = #{id}
+    </select>
+</mapper>
